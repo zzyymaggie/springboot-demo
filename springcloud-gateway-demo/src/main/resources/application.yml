@@ -1,0 +1,44 @@
+server:
+  port: 1107
+
+spring:
+  application:
+    name: springcloud-gateway-demo
+  cloud:
+      gateway:
+        filter:
+          remove-non-proxy-headers:
+            headers:
+            - dummy
+        routes:
+          - id:  api-c
+            uri: lb://hello-service
+            predicates:
+            - Path=/api-c/**
+            filters:
+            - name: Hystrix
+              args:
+                name: demo1
+                fallbackUri: forward:/fallback
+            - StripPrefix=1
+            - name: RequestRateLimiter
+              args:
+                key-resolver: '#{@remoteAddrKeyResolver}'
+                redis-rate-limiter.replenishRate: 8
+                redis-rate-limiter.burstCapacity: 10
+  redis:
+    host: 172.16.116.48
+    port: 6379
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://172.16.116.48:8765/eureka/
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 2000
