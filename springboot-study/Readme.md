@@ -1,4 +1,4 @@
-# 背景
+#  一、背景
 
 springboot1.5.9集成JavaMelody的时候， [https://github.com/javamelody/javamelody/blob/without-spring-boot-starter/javamelody-for-spring-boot/src/main/java/hello/JavaMelodyConfiguration.java#L110](https://github.com/javamelody/javamelody/blob/without-spring-boot-starter/javamelody-for-spring-boot/src/main/java/hello/JavaMelodyConfiguration.java#L110)  发现这种集成方式的配置采用的硬编码方式，不能根据配置文件进行配置。因此我就想将配置方式修改为从配置文件读取，我的第一想法是采用@Value注解，先把一个log参数读取进来，但是发现该参数一直不能生效。
 
@@ -8,9 +8,9 @@ springboot1.5.9集成JavaMelody的时候， [https://github.com/javamelody/javam
 
 那是什么原因呢？
 
-# 原因探析
+# 二、原因探析
 
-### 1.表象的深入分析
+### 2.1 表象的深入分析
 
 1.经过查看源码发现，SpringDataSourceBeanPostProcessor和SpringRestTemplateBeanPostProcessor实现了BeanPostProcessor, PriorityOrdered这两个接口。
 
@@ -26,7 +26,7 @@ springboot1.5.9集成JavaMelody的时候， [https://github.com/javamelody/javam
 
  据此推断，可能是MyConfiguration1启动时机过早，导致实现@Value注解的AutowiredAnnotationBeanPostProcessor没来得及实例化及注册呢。 
 
-### 2. BeanPostProcessor启动阶段对其依赖的Bean造成的影响 
+### 2.2 BeanPostProcessor启动阶段对其依赖的Bean造成的影响 
 
 BeanPostProcessor的启动阶段包括四个阶段
 
@@ -115,11 +115,16 @@ AbstractApplicationContext.refresh()
 
 这个场景里就是MyPriorityPost开始实例化时会导致MyConfiguration1实例化，而此时是无法享受到同是实现了PriorityOrdered的AutowiredAnnotationBeanPostProcessor服务，导致@Value参数注入失败。
 
+同时，在PriorityOrdered接口的注解中也提到了该情况：
+> Note: {@code PriorityOrdered} post-processor beans are initialized in
+ 	* a special phase, ahead of other post-processor beans. This subtly
+ 	* affects their autowiring behavior: they will only be autowired against
+ 	* beans which do not require eager initialization for type matching.
 
 
-# 解决方案
+# 三、解决方案
 
-### 1.注入参数采用构造器参数注入
+### 3.1 注入参数采用构造器参数注入
 
 将参数封装到@ConfigurationProperties里，然后采用@Bean实例化，再通过构造器参数注入。
 
@@ -147,7 +152,7 @@ public class MyConfiguration2 {
 
 但是如果只是一个参数，用这种方式有些太重了。所以有了第二种一劳永逸的办法。
 
-### 2.将实现了 PriorityOrdered的BeanPostProcessor单独放到一个配置类
+### 3.2 将实现了 PriorityOrdered的BeanPostProcessor单独放到一个配置类
 
 ```java
 @Configuration
@@ -159,7 +164,8 @@ public class MyConfiguration3Seperator {
 }
 ```
 
-参考文章：[https://blog.csdn.net/m0_37962779/article/details/78605478](https://blog.csdn.net/m0_37962779/article/details/78605478)
+# 四、附录
+参考资料：[https://blog.csdn.net/m0_37962779/article/details/78605478](https://blog.csdn.net/m0_37962779/article/details/78605478)
 
 代码库：
 [https://github.com/zzyymaggie/springboot-demo/tree/master/springboot-study](https://github.com/zzyymaggie/springboot-demo/tree/master/springboot-study)
