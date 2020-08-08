@@ -1,10 +1,10 @@
-package com.example.fixed;
+package com.example.fixed1;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class MyConfiguration3 {
+public class MyConfiguration2 {
 
     @Bean
     public HelloProperties helloProperties() {

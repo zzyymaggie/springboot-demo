@@ -1,6 +1,6 @@
 package com.example;
 
-import com.example.issue.MyConfiguration2;
+import com.example.issue.MyConfiguration1;
 import com.example.util.MyConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -22,7 +22,7 @@ public class Application3 implements ApplicationListener<ContextRefreshedEvent> 
 	private MyConfiguration myConfiguration;
 
 	@Autowired
-	private MyConfiguration2 myConfiguration2;
+	private MyConfiguration1 myConfiguration1;
 
 	@GetMapping("/test")
 	public String test() {
@@ -32,12 +32,12 @@ public class Application3 implements ApplicationListener<ContextRefreshedEvent> 
 
 	@GetMapping("/test2")
 	public String test2() {
-		return "test2:" + myConfiguration2.isLog();
+		return "test2:" + myConfiguration1.isLog();
 	}
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
 		System.out.println("myConfiguration.isLog:" + myConfiguration.isLog());
-		System.out.println("myConfiguration2.isLog:" + myConfiguration2.isLog());
+		System.out.println("myConfiguration2.isLog:" + myConfiguration1.isLog());
 	}
 }

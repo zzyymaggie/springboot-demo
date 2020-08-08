@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class MyConfiguration2 {
+public class MyConfiguration1 {
 
     @Value("${hello.log}")
     private boolean log;

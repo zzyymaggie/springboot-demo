@@ -1,6 +1,5 @@
-package com.example.fixed;
+package com.example.fixed1;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "hello")
