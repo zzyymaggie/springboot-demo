@@ -1,6 +1,6 @@
 # 背景
 
-springboot1.5.9继承JavaMelody的时候， https://github.com/javamelody/javamelody/blob/without-spring-boot-starter/javamelody-for-spring-boot/src/main/java/hello/JavaMelodyConfiguration.java#L110  发现这种继承方式的配置采用的硬编码方式，不能根据配置文件进行配置。因此我就想将配置方式修改为从配置文件读取，我的第一想法是采用@Value注解，先把一个log参数读取进来，但是发现该参数一直不能生效。
+springboot1.5.9集成JavaMelody的时候， https://github.com/javamelody/javamelody/blob/without-spring-boot-starter/javamelody-for-spring-boot/src/main/java/hello/JavaMelodyConfiguration.java#L110  发现这种继承方式的配置采用的硬编码方式，不能根据配置文件进行配置。因此我就想将配置方式修改为从配置文件读取，我的第一想法是采用@Value注解，先把一个log参数读取进来，但是发现该参数一直不能生效。
 
 第一步，将monitoringFilter以下的bean都注释掉，该配置就生效了。
 
