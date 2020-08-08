@@ -22,12 +22,11 @@ public class MyConfiguration2 {
 
     /**
      *
-     * MyPost2实现了PriorityOrdered,影响了AutoConfiguration的@Value的解析
+     * MyPriorityPost实现了PriorityOrdered,影响了AutoConfiguration的@Value的解析
      * 去掉它，可以获取到正确的参数值
      */
     @Bean
-    public MyPost2 myPost2(){
-        System.out.println("myPost2:" + log);
-        return new MyPost2();
+    public MyPriorityPost myPriorityPost(){
+        return new MyPriorityPost();
     }
 }

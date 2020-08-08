@@ -4,7 +4,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.PriorityOrdered;
 
-public class MyPost2 implements BeanPostProcessor, PriorityOrdered {
+public class MyPriorityPost implements BeanPostProcessor, PriorityOrdered {
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         return bean;
