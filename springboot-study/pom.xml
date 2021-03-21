@@ -11,5 +11,7 @@
 
     <modules>
         <module>dependency-injection-example</module>
+<!--        <module>kafka-demo</module>-->
+        <module>kafka-demo2</module>
     </modules>
 </project>
