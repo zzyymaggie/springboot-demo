@@ -37,7 +37,7 @@ public class DemoProducer3 {
         properties.put(ProducerConfig.RETRIES_CONFIG, 0);
         producer = new KafkaProducer(properties);
 
-        int threadNum = Runtime.getRuntime().availableProcessors() + 1;
+        int threadNum = 1;
         int queueCapacity = 10000;
         threadPoolExecutor =
             new ThreadPoolExecutor(threadNum, threadNum, 0L, TimeUnit.MILLISECONDS,
